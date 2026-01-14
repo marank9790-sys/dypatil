@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Testing Platform - DYPTL University</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #283593;
+        }
+
+        h1 {
+            color: #283593;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .disclaimer h3 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .email-form, .preview-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #283593;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #283593;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: #283593;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background: #1a237e;
+        }
+
+        .btn-secondary {
+            background: #757de8;
+        }
+
+        .btn-secondary:hover {
+            background: #5c6bc0;
+        }
+
+        .email-preview {
+            background: #f5f5f5;
+            border-radius: 5px;
+            padding: 20px;
+            min-height: 300px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+        }
+
+        .email-header {
+            background: #283593;
+            color: white;
+            padding: 20px;
+            border-radius: 5px 5px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+
+        .email-subject {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .email-meta {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 5px;
+        }
+
+        .template-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .template-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .template-btn {
+            padding: 10px;
+            background: #e8eaf6;
+            border: 2px solid #c5cae9;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .template-btn:hover {
+            background: #c5cae9;
+        }
+
+        .template-btn.active {
+            background: #283593;
+            color: white;
+            border-color: #283593;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .logs-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-time {
+            color: #666;
+            margin-right: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+
+        .university-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-university logo-icon"></i>
+                <div>
+                    <h1>DYPTL University</h1>
+                    <div class="tagline">Email Testing Platform - For Educational Purposes Only</div>
+                </div>
+            </div>
+            
+            <div class="disclaimer">
+                <h3><i class="fas fa-exclamation-triangle"></i> Important Disclaimer</h3>
+                <p>This is a <strong>DEMONSTRATION WEBSITE ONLY</strong>. All emails are simulated and never actually sent. This platform is for educational/portfolio purposes to demonstrate email template design and functionality. DYPTL.com is a fictional domain created for this demonstration.</p>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <section class="email-form">
+                <h2><i class="fas fa-envelope"></i> Compose Email</h2>
+                
+                <div class="form-group">
+                    <label for="fromEmail">From (DYPTL Domain)</label>
+                    <select id="fromEmail">
+                        <option value="admissions@dyptl.com">Admissions Department - admissions@dyptl.com</option>
+                        <option value="academics@dyptl.com">Academics Office - academics@dyptl.com</option>
+                        <option value="exams@dyptl.com">Examination Department - exams@dyptl.com</option>
+                        <option value="placements@dyptl.com">Placement Cell - placements@dyptl.com</option>
+                        <option value="dean@dyptl.com">Dean's Office - dean@dyptl.com</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="toEmail">To</label>
+                    <input type="email" id="toEmail" value="marank1105@gmail.com" placeholder="recipient@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" value="Admission Update - DYPTL University">
+                </div>
+
+                <div class="form-group">
+                    <label>Email Template</label>
+                    <div class="template-options">
+                        <div class="template-btn active" data-template="admission">Admission</div>
+                        <div class="template-btn" data-template="academic">Academic</div>
+                        <div class="template-btn" data-template="exam">Examination</div>
+                        <div class="template-btn" data-template="placement">Placement</div>
+                        <div class="template-btn" data-template="event">Event</div>
+                        <div class="template-btn" data-template="custom">Custom</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="emailBody">Email Body</label>
+                    <textarea id="emailBody">
+Dear Student,
+
+We are pleased to inform you that your application for the MBA (Artificial Intelligence) program at DYPTL University has been received and is currently under review.
+
+Important Dates:
+- Application Review: January 15-30, 2026
+- Interview Schedule: February 1-10, 2026
+- Final Decision: February 15, 2026
+
+Please ensure all your documents are submitted through our online portal. If you have any questions, feel free to contact our admissions office.
+
+Best regards,
+Admissions Committee
+DYPTL University
+www.dyptl.com
+
+Note: This is a simulated email for demonstration purposes only.
+                    </textarea>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i> Simulate Email Send
+                    </button>
+                    <button class="btn btn-secondary" id="previewBtn">
+                        <i class="fas fa-eye"></i> Update Preview
+                    </button>
+                </div>
+
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle"></i> Email simulation successful! Check the email preview and logs below.
+                </div>
+            </section>
+
+            <section class="preview-section">
+                <h2><i class="fas fa-search"></i> Email Preview</h2>
+                <div class="email-preview">
+                    <div class="email-header">
+                        <div class="email-subject" id="previewSubject">Admission Update - DYPTL University</div>
+                        <div class="email-meta"><strong>From:</strong> <span id="previewFrom">admissions@dyptl.com</span></div>
+                        <div class="email-meta"><strong>To:</strong> <span id="previewTo">marank1105@gmail.com</span></div>
+                        <div class="email-meta"><strong>Date:</strong> <span id="previewDate">Loading...</span></div>
+                    </div>
+                    <div id="previewBody">
+                        <p>Dear Student,</p>
+                        <p>We are pleased to inform you that your application for the MBA (Artificial Intelligence) program at DYPTL University has been received and is currently under review.</p>
+                        <p><strong>Important Dates:</strong></p>
+                        <ul>
+                            <li>Application Review: January 15-30, 2026</li>
+                            <li>Interview Schedule: February 1-10, 2026</li>
+                            <li>Final Decision: February 15, 2026</li>
+                        </ul>
+                        <p>Please ensure all your documents are submitted through our online portal. If you have any questions, feel free to contact our admissions office.</p>
+                        <p>Best regards,<br>
+                        Admissions Committee<br>
+                        DYPTL University<br>
+                        www.dyptl.com</p>
+                        <p style="color: #666; font-size: 0.9rem; margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee;">
+                            <em>Note: This is a simulated email for demonstration purposes only.</em>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="logs-section">
+            <h2><i class="fas fa-history"></i> Email Simulation Logs</h2>
+            <div id="emailLogs">
+                <div class="log-entry">
+                    <span class="log-time">[System]</span> Email testing platform initialized. Ready to simulate emails.
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">[System]</span> This is a demonstration website. No actual emails are sent.
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="university-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>DYPTL University - Educational Demonstration</span>
+            </div>
+            <p>This website is for portfolio and educational purposes only.</p>
+            <p>DYPTL.com is a fictional domain created for this demonstration.</p>
+            <p style="margin-top: 15px;">Hosted on GitHub Pages | Made with HTML, CSS & JavaScript</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('previewDate').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Template data
+            const templates = {
+                admission: {
+                    subject: "Admission Update - DYPTL University",
+                    body: `Dear Student,
+
+We are pleased to inform you that your application for the MBA (Artificial Intelligence) program at DYPTL University has been received and is currently under review.
+
+Important Dates:
+- Application Review: January 15-30, 2026
+- Interview Schedule: February 1-10, 2026
+- Final Decision: February 15, 2026
+
+Please ensure all your documents are submitted through our online portal. If you have any questions, feel free to contact our admissions office.
+
+Best regards,
+Admissions Committee
+DYPTL University
+www.dyptl.com
+
+Note: This is a simulated email for demonstration purposes only.`
+                },
+                academic: {
+                    subject: "Academic Schedule - Winter Semester 2026",
+                    body: `Dear Student,
+
+This email contains your academic schedule for the Winter Semester 2026 at DYPTL University.
+
+Key Academic Dates:
+- Semester Start: January 5, 2026
+- Mid-Term Exams: February 15-25, 2026
+- Project Submission: March 20, 2026
+- Final Exams: April 10-25, 2026
+- Result Declaration: May 5, 2026
+
+You can access your detailed timetable through the student portal. Regular attendance is mandatory as per university guidelines.
+
+Best regards,
+Academic Office
+DYPTL University
+www.dyptl.com
+
+Note: This is a simulated email for demonstration purposes only.`
+                },
+                exam: {
+                    subject: "Examination Schedule and Guidelines",
+                    body: `Dear Student,
+
+Please find below the examination schedule for your current semester:
+
+Examination Schedule:
+- Theory Papers: April 10-20, 2026 (9:00 AM - 12:00 PM)
+- Practical Exams: April 22-25, 2026 (Lab Sessions)
+- Viva Voce: April 28-30, 2026
+- Project Evaluation: May 1-5, 2026
+
+Examination Guidelines:
+1. Carry your student ID card
+2. Report 30 minutes before exam time
+3. Electronic devices not permitted
+4. Follow all COVID-19 safety protocols
+
+Best regards,
+Examination Department
+DYPTL University
+www.dyptl.com
+
+Note: This is a simulated email for demonstration purposes only.`
+                },
+                placement: {
+                    subject: "Placement Drive - Tech Giants Campus Recruitment",
+                    body: `Dear Final Year Students,
+
+We are excited to announce the upcoming campus placement drive at DYPTL University.
+
+Participating Companies:
+- TechCorp Inc. (AI/ML Roles)
+- DataSystems Ltd. (Data Science)
+- InnovateTech Solutions (Software Development)
+- FutureAI Research (Research Positions)
+
+Schedule:
+- Registration Deadline: January 25, 2026
+- Pre-Placement Talk: January 28, 2026
+- Written Test: January 30, 2026
+- Interviews: February 1-5, 2026
+
+Prepare your resumes and ensure your placement registration is complete on the portal.
+
+Best regards,
+Placement Cell
+DYPTL University
+www.dyptl.com
+
+Note: This is a simulated email for demonstration purposes only.`
+                },
+                event: {
+                    subject: "Invitation: Annual Tech Fest 2026",
+                    body: `Dear Student,
+
+You are cordially invited to the Annual Tech Fest "Innovate 2026" at DYPTL University.
+
+Event Details:
+- Date: February 15-17, 2026
+- Venue: University Campus
+- Theme: "Artificial Intelligence for Social Good"
+
+Highlights:
+- AI/ML Workshops
+- Hackathon (Prize: ₹50,000)
+- Tech Talks by Industry Leaders
+- Project Exhibition
+- Startup Pitch Competition
+
+Registration is free but mandatory. Limited seats available.
+
+Best regards,
+Student Affairs Committee
+DYPTL University
+www.dyptl.com
+
+Note: This is a simulated email for demonstration purposes only.`
+                },
+                custom: {
+                    subject: "",
+                    body: ""
+                }
+            };
+
+            // Template button handlers
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.template-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const template = this.getAttribute('data-template');
+                    
+                    if (template !== 'custom') {
+                        document.getElementById('subject').value = templates[template].subject;
+                        document.getElementById('emailBody').value = templates[template].body;
+                        updatePreview();
+                    }
+                });
+            });
+
+            // Update preview function
+            function updatePreview() {
+                const from = document.getElementById('fromEmail').value;
+                const to = document.getElementById('toEmail').value;
+                const subject = document.getElementById('subject').value;
+                const body = document.getElementById('emailBody').value;
+                
+                document.getElementById('previewFrom').textContent = from;
+                document.getElementById('previewTo').textContent = to;
+                document.getElementById('previewSubject').textContent = subject;
+                
+                // Convert plain text to HTML for preview
+                const formattedBody = body
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/^- (.*?)$/gm, '<li>$1</li>')
+                    .replace(/<li>.*?<\/li>/g, function(match) {
+                        return match;
+                    });
+                
+                // Check if there are list items
+                const hasListItems = body.match(/^- .*$/gm);
+                let finalBody = formattedBody;
+                
+                if (hasListItems) {
+                    finalBody = formattedBody.replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>');
+                    // Fix nested ul tags
+                    finalBody = finalBody.replace(/<\/ul><br><ul>/g, '');
+                }
+                
+                document.getElementById('previewBody').innerHTML = finalBody + 
+                    `<p style="color: #666; font-size: 0.9rem; margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee;">
+                        <em>Note: This is a simulated email for demonstration purposes only.</em>
+                    </p>`;
+                
+                // Update date
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+                document.getElementById('previewDate').textContent = now.toLocaleDateString('en-US', options);
+            }
+
+            // Preview button
+            document.getElementById('previewBtn').addEventListener('click', updatePreview);
+
+            // Send button
+            document.getElementById('sendBtn').addEventListener('click', function() {
+                const from = document.getElementById('fromEmail').value;
+                const to = document.getElementById('toEmail').value;
+                const subject = document.getElementById('subject').value;
+                const now = new Date();
+                
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.style.display = 'block';
+                
+                // Add to logs
+                const logs = document.getElementById('emailLogs');
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <span class="log-time">[${now.toLocaleTimeString()}]</span>
+                    Simulated email sent from <strong>${from}</strong> to <strong>${to}</strong> with subject: "${subject}"
+                `;
+                logs.insertBefore(logEntry, logs.firstChild.nextSibling);
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+                
+                // Update preview
+                updatePreview();
+            });
+
+            // Initialize preview
+            updatePreview();
+            
+            // Auto-update preview when inputs change
+            document.getElementById('fromEmail').addEventListener('change', updatePreview);
+            document.getElementById('toEmail').addEventListener('input', updatePreview);
+            document.getElementById('subject').addEventListener('input', updatePreview);
+            document.getElementById('emailBody').addEventListener('input', updatePreview);
+        });
+    </script>
+</body>
+</html>
