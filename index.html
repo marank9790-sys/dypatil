@@ -160,6 +160,14 @@
             background: #5c6bc0;
         }
 
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
         .email-preview {
             background: #f5f5f5;
             border-radius: 5px;
@@ -232,6 +240,62 @@
             display: none;
         }
 
+        .inbox-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .email-inbox {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .inbox-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+        }
+
+        .inbox-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .inbox-item:hover {
+            background: #f8f9fa;
+        }
+
+        .inbox-item.unread {
+            font-weight: 600;
+        }
+
+        .inbox-subject {
+            color: #283593;
+            margin-bottom: 5px;
+        }
+
+        .inbox-preview {
+            color: #666;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .inbox-meta {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
         .logs-section {
             background: white;
             border-radius: 10px;
@@ -269,6 +333,15 @@
             border-radius: 50px;
             margin-bottom: 15px;
         }
+
+        .received-email {
+            background: #e7f3ff;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -278,13 +351,13 @@
                 <i class="fas fa-university logo-icon"></i>
                 <div>
                     <h1>DYPTL University</h1>
-                    <div class="tagline">Email Testing Platform - For Educational Purposes Only</div>
+                    <div class="tagline">Email Testing Platform - Simulation Only</div>
                 </div>
             </div>
             
             <div class="disclaimer">
-                <h3><i class="fas fa-exclamation-triangle"></i> Important Disclaimer</h3>
-                <p>This is a <strong>DEMONSTRATION WEBSITE ONLY</strong>. All emails are simulated and never actually sent. This platform is for educational/portfolio purposes to demonstrate email template design and functionality. DYPTL.com is a fictional domain created for this demonstration.</p>
+                <h3><i class="fas fa-exclamation-triangle"></i> Important Notice</h3>
+                <p>This is a <strong>DEMONSTRATION PLATFORM ONLY</strong>. No actual emails are sent. All emails are simulated to show how they would appear. Check the "Simulated Inbox" below to see what emails you would have received.</p>
             </div>
         </header>
 
@@ -355,10 +428,18 @@ Note: This is a simulated email for demonstration purposes only.
                     <button class="btn btn-secondary" id="previewBtn">
                         <i class="fas fa-eye"></i> Update Preview
                     </button>
+                    <button class="btn btn-success" id="checkInboxBtn">
+                        <i class="fas fa-inbox"></i> Check Simulated Inbox
+                    </button>
                 </div>
 
                 <div id="successMessage" class="success-message">
-                    <i class="fas fa-check-circle"></i> Email simulation successful! Check the email preview and logs below.
+                    <i class="fas fa-check-circle"></i> Email simulation successful! Check the simulated inbox below.
+                </div>
+
+                <div id="receivedEmail" class="received-email">
+                    <h4><i class="fas fa-envelope-open"></i> Email Would Have Been Received</h4>
+                    <div id="receivedContent"></div>
                 </div>
             </section>
 
@@ -393,6 +474,20 @@ Note: This is a simulated email for demonstration purposes only.
             </section>
         </div>
 
+        <section class="inbox-section">
+            <h2><i class="fas fa-inbox"></i> Simulated Inbox - marank1105@gmail.com</h2>
+            <p>These are simulated emails that you would have received:</p>
+            
+            <div class="email-inbox">
+                <div class="inbox-header">
+                    <i class="fas fa-envelope"></i> Received Emails (Simulated)
+                </div>
+                <div id="inboxEmails">
+                    <!-- Inbox emails will be added here -->
+                </div>
+            </div>
+        </section>
+
         <section class="logs-section">
             <h2><i class="fas fa-history"></i> Email Simulation Logs</h2>
             <div id="emailLogs">
@@ -408,9 +503,9 @@ Note: This is a simulated email for demonstration purposes only.
         <footer>
             <div class="university-badge">
                 <i class="fas fa-graduation-cap"></i>
-                <span>DYPTL University - Educational Demonstration</span>
+                <span>DYPTL University - Email Simulation Platform</span>
             </div>
-            <p>This website is for portfolio and educational purposes only.</p>
+            <p>This website is for portfolio and educational purposes only. No actual emails are transmitted.</p>
             <p>DYPTL.com is a fictional domain created for this demonstration.</p>
             <p style="margin-top: 15px;">Hosted on GitHub Pages | Made with HTML, CSS & JavaScript</p>
         </footer>
@@ -559,15 +654,16 @@ Note: This is a simulated email for demonstration purposes only.`
                 }
             };
 
+            // Simulated inbox
+            let inboxEmails = [];
+
             // Template button handlers
             document.querySelectorAll('.template-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // Remove active class from all buttons
                     document.querySelectorAll('.template-btn').forEach(b => {
                         b.classList.remove('active');
                     });
                     
-                    // Add active class to clicked button
                     this.classList.add('active');
                     
                     const template = this.getAttribute('data-template');
@@ -595,10 +691,7 @@ Note: This is a simulated email for demonstration purposes only.`
                 const formattedBody = body
                     .replace(/\n/g, '<br>')
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/^- (.*?)$/gm, '<li>$1</li>')
-                    .replace(/<li>.*?<\/li>/g, function(match) {
-                        return match;
-                    });
+                    .replace(/^- (.*?)$/gm, '<li>$1</li>');
                 
                 // Check if there are list items
                 const hasListItems = body.match(/^- .*$/gm);
@@ -606,7 +699,6 @@ Note: This is a simulated email for demonstration purposes only.`
                 
                 if (hasListItems) {
                     finalBody = formattedBody.replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>');
-                    // Fix nested ul tags
                     finalBody = finalBody.replace(/<\/ul><br><ul>/g, '');
                 }
                 
@@ -629,6 +721,92 @@ Note: This is a simulated email for demonstration purposes only.`
                 document.getElementById('previewDate').textContent = now.toLocaleDateString('en-US', options);
             }
 
+            // Add email to simulated inbox
+            function addToInbox(from, to, subject, body) {
+                const email = {
+                    id: Date.now(),
+                    from: from,
+                    to: to,
+                    subject: subject,
+                    body: body,
+                    date: new Date().toLocaleString(),
+                    read: false
+                };
+                
+                inboxEmails.unshift(email); // Add to beginning
+                updateInboxDisplay();
+                
+                // Show received email notification
+                document.getElementById('receivedContent').innerHTML = `
+                    <p><strong>From:</strong> ${from}</p>
+                    <p><strong>To:</strong> ${to}</p>
+                    <p><strong>Subject:</strong> ${subject}</p>
+                    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                    <p><strong>Body Preview:</strong> ${body.substring(0, 100)}...</p>
+                `;
+                document.getElementById('receivedEmail').style.display = 'block';
+                
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    document.getElementById('receivedEmail').style.display = 'none';
+                }, 10000);
+            }
+
+            // Update inbox display
+            function updateInboxDisplay() {
+                const inboxContainer = document.getElementById('inboxEmails');
+                inboxContainer.innerHTML = '';
+                
+                if (inboxEmails.length === 0) {
+                    inboxContainer.innerHTML = `
+                        <div class="inbox-item">
+                            <p style="text-align: center; color: #999; padding: 20px;">
+                                <i class="fas fa-inbox fa-2x"></i><br>
+                                No simulated emails received yet.
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                inboxEmails.forEach(email => {
+                    const emailElement = document.createElement('div');
+                    emailElement.className = `inbox-item ${email.read ? '' : 'unread'}`;
+                    emailElement.innerHTML = `
+                        <div class="inbox-subject">${email.subject}</div>
+                        <div class="inbox-preview">${email.body.substring(0, 100)}...</div>
+                        <div class="inbox-meta">
+                            <i class="fas fa-user"></i> ${email.from} • 
+                            <i class="fas fa-clock"></i> ${email.date}
+                        </div>
+                    `;
+                    
+                    emailElement.addEventListener('click', function() {
+                        email.read = true;
+                        updateInboxDisplay();
+                        
+                        // Show full email
+                        document.getElementById('receivedContent').innerHTML = `
+                            <p><strong>From:</strong> ${email.from}</p>
+                            <p><strong>To:</strong> ${email.to}</p>
+                            <p><strong>Subject:</strong> ${email.subject}</p>
+                            <p><strong>Date:</strong> ${email.date}</p>
+                            <hr>
+                            <div style="white-space: pre-line; margin-top: 10px;">${email.body}</div>
+                        `;
+                        document.getElementById('receivedEmail').style.display = 'block';
+                    });
+                    
+                    inboxContainer.appendChild(emailElement);
+                });
+            }
+
+            // Check inbox button
+            document.getElementById('checkInboxBtn').addEventListener('click', function() {
+                updateInboxDisplay();
+                document.getElementById('receivedEmail').style.display = 'none';
+            });
+
             // Preview button
             document.getElementById('previewBtn').addEventListener('click', updatePreview);
 
@@ -637,6 +815,7 @@ Note: This is a simulated email for demonstration purposes only.`
                 const from = document.getElementById('fromEmail').value;
                 const to = document.getElementById('toEmail').value;
                 const subject = document.getElementById('subject').value;
+                const body = document.getElementById('emailBody').value;
                 const now = new Date();
                 
                 // Show success message
@@ -652,6 +831,9 @@ Note: This is a simulated email for demonstration purposes only.`
                     Simulated email sent from <strong>${from}</strong> to <strong>${to}</strong> with subject: "${subject}"
                 `;
                 logs.insertBefore(logEntry, logs.firstChild.nextSibling);
+                
+                // Add to simulated inbox
+                addToInbox(from, to, subject, body);
                 
                 // Hide success message after 5 seconds
                 setTimeout(() => {
@@ -670,6 +852,23 @@ Note: This is a simulated email for demonstration purposes only.`
             document.getElementById('toEmail').addEventListener('input', updatePreview);
             document.getElementById('subject').addEventListener('input', updatePreview);
             document.getElementById('emailBody').addEventListener('input', updatePreview);
+            
+            // Add sample emails to inbox
+            setTimeout(() => {
+                addToInbox(
+                    "admissions@dyptl.com",
+                    "marank1105@gmail.com",
+                    "Welcome to DYPTL University - Account Created",
+                    "Dear Student,\n\nWelcome to DYPTL University! Your student account has been successfully created.\n\nYour Student ID: DYU20260015\nPassword: You will receive a separate email to set your password.\n\nPlease log in to the student portal to complete your profile.\n\nBest regards,\nAdmissions Office\nDYPTL University"
+                );
+                
+                addToInbox(
+                    "academics@dyptl.com",
+                    "marank1105@gmail.com",
+                    "Winter Semester 2026 - Course Registration",
+                    "Dear Student,\n\nCourse registration for Winter Semester 2026 is now open. Please complete your course selection by January 10, 2026.\n\nImportant:\n- Core courses are mandatory\n- Select 2 elective courses\n- Check prerequisite requirements\n\nBest regards,\nAcademic Office\nDYPTL University"
+                );
+            }, 1000);
         });
     </script>
 </body>
